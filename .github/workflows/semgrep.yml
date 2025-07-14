@@ -1,0 +1,27 @@
+name: Semgrep Static Analysis
+
+on:
+  push:
+    branches: [dev_fe]
+  pull_request:
+    branches: [dev_fe]
+
+jobs:
+  semgrep:
+    name: Run Semgrep Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Semgrep
+        run: pip install semgrep
+
+      - name: Run Semgrep (fail on findings)
+        run: semgrep --config=auto --error .
